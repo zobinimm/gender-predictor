@@ -9,7 +9,8 @@ of (a) given name(s) in Chinese.
 
 import json
 from collections import defaultdict, Counter
-
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
 class Gender:
     '''Predict the gender(s) of (a) given name(s) in Chinese.
@@ -53,7 +54,7 @@ class Gender:
         self._gtDict = self._goodTuring()
         
         # get last names for later splitting first names
-        f = open('data/ChineseLastNames.txt', 'r')
+        f = open(os.path.join(current_dir, 'data/ChineseLastNames.txt'), 'r', encoding='utf-8')
         next(f)
         lastnames = [line.split('\t')[0] for line in f]    
         uni_nam, bi_nam = (), ()
@@ -64,7 +65,7 @@ class Gender:
         self._bi_nam = bi_nam
         
     def _loadDict(self):
-        genderDict = json.load(open('data/dict4Gender.json', 'r'))
+        genderDict = json.load(open(os.path.join(current_dir, 'data/dict4Gender.json'), 'r', encoding='utf-8'))
         genderDict = {k: Counter(v) for k, v in genderDict.items()}
         return defaultdict(Counter, genderDict)
         
